@@ -50,9 +50,10 @@ class ChinaRailway:
     @staticmethod
     async def search_tickets(date_str: str, from_city: str, to_city: str):
         try:
-            date_obj = datetime.strptime(date_str, '%Y-%m-%d')
-            now = datetime.now()
-            if now >= date_obj or (now + timedelta(days=15)) < date_obj:
+            date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()  # 仅比较日期
+            now = datetime.now().date()
+
+            if now > date_obj or (now + timedelta(days=15)) < date_obj:
                 raise Exception('日期需为0~15天内')
 
             from_cities = await ChinaRailway.find_cities(from_city)
@@ -247,6 +248,7 @@ async def search_endpoint(date: str, from_city: str, to_city: str):
 async def search(date: str, from_city: str, to_city: str):
     print("123")
     return await search_endpoint(date, from_city, to_city)
+
 
 # if __name__ == "__main__":
 #     import uvicorn
